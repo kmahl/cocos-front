@@ -1,10 +1,27 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
 import { portfolioAPI, ordersAPI, instrumentsAPI } from '../utils/api';
+
+// Función para obtener userId de la URL
+const getUserIdFromURL = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const userIdParam = urlParams.get('userId');
+  const userId = userIdParam ? parseInt(userIdParam, 10) : 1;
+  
+  // Validar que esté entre 1-5
+  return userId >= 1 && userId <= 5 ? userId : 1;
+};
+
+// Función para actualizar la URL con el userId
+const updateURLWithUserId = (userId) => {
+  const url = new URL(window.location);
+  url.searchParams.set('userId', userId.toString());
+  window.history.replaceState({}, '', url);
+};
 
 // Estado inicial
 const initialState = {
-  // Usuario seleccionado
-  userId: 1,
+  // Usuario seleccionado (lee de la URL)
+  userId: getUserIdFromURL(),
   
   // Estados de carga
   loading: {
@@ -204,12 +221,26 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
+  // Efecto para escuchar cambios en la URL (botón atrás/adelante)
+  useEffect(() => {
+    const handlePopState = () => {
+      const urlUserId = getUserIdFromURL();
+      if (urlUserId !== state.userId) {
+        dispatch({ type: ActionTypes.SET_USER_ID, payload: urlUserId });
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [state.userId]);
+
   // ==========================================================================
   // ACCIONES DE USUARIO
   // ==========================================================================
 
   const setUserId = useCallback((userId) => {
     dispatch({ type: ActionTypes.SET_USER_ID, payload: userId });
+    updateURLWithUserId(userId);
   }, []);
 
   // ==========================================================================
