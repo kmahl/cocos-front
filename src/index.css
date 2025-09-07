@@ -1,0 +1,37 @@
+/* Reset CSS para la aplicación de trading */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa;
+}
+
+#root {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Remover estilos por defecto que interfieren */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Asegurar que Material-UI tome el control completo */
+.MuiCssBaseline-root {
+  height: 100%;
+}
