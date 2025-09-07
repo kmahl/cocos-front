@@ -143,7 +143,7 @@ const Dashboard = () => {
         height: 'calc(100vh - 120px)', // Resta la altura del header
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflow: 'auto',
         backgroundColor: '#b9d4d0', // Fondo verde claro como el header
       }}
     >
@@ -565,7 +565,7 @@ const Dashboard = () => {
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 2 }}>
                         <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-                          Cant: {String(order.size || 0)}
+                          ID: {String(order.id || 'N/A')} • Cant: {String(order.size || 0)}
                         </Typography>
                         {order.status === 'NEW' && (
                           <Button
